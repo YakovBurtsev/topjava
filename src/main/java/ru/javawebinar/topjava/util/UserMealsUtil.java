@@ -31,12 +31,12 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.JUNE, 1, 13, 0), "Обед", 1000),
                 new UserMeal(LocalDateTime.of(2015, Month.JUNE, 1, 20, 0), "Ужин", 500)
         );
-        List<UserMealWithExceed> filteredWithExceeded =
-                getFilteredWithExceeded(mealList, LocalTime.of(11, 0), LocalTime.of(15, 0), 2000);
-        for (UserMealWithExceed userMealWithExceed : filteredWithExceeded) {
-            System.out.println(userMealWithExceed.getDateTime()
-                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) + " " + userMealWithExceed.isExceed());
-        }
+
+        getFilteredWithExceeded(mealList, LocalTime.of(11, 0), LocalTime.of(15, 0), 2000)
+                .forEach(userMealWithExceed -> System.out.println(
+                        userMealWithExceed.getDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) +
+                        " " + userMealWithExceed.isExceed()));
+
     }
 
     public static List<UserMealWithExceed> getFilteredWithExceededJava7(
