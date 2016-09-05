@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,10 +32,7 @@ public class UserMealsUtil {
         );
 
         getFilteredWithExceeded(mealList, LocalTime.of(11, 0), LocalTime.of(15, 0), 2000)
-                .forEach(userMealWithExceed -> System.out.println(
-                        userMealWithExceed.getDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) +
-                        " " + userMealWithExceed.isExceed()));
-
+                .forEach(System.out::println);
     }
 
     public static List<UserMealWithExceed> getFilteredWithExceededJava7(
@@ -83,7 +79,6 @@ public class UserMealsUtil {
                 .map(meal -> new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
                         totalCaloriesOnDate.get(meal.getLocalDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
-
     }
 
 

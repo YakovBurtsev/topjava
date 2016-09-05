@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * GKislin
@@ -36,5 +37,10 @@ public class UserMealWithExceed {
 
     public boolean isExceed() {
         return exceed;
+    }
+
+    @Override
+    public String toString() {
+        return getDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) + " " + isExceed();
     }
 }
