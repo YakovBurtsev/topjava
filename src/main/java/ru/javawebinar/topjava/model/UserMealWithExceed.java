@@ -41,6 +41,11 @@ public class UserMealWithExceed {
 
     @Override
     public String toString() {
-        return getDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) + " " + isExceed();
+        return "UserMealWithExceed{" +
+                "dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                ", calories=" + calories +
+                ", exceed=" + exceed +
+                '}';
     }
 }

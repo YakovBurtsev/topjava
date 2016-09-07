@@ -31,8 +31,8 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.JUNE, 1, 20, 0), "Ужин", 500)
         );
 
-        getFilteredWithExceeded(mealList, LocalTime.of(9, 0), LocalTime.of(23, 0), 2000)
-                .forEach(System.out::println);
+        List<UserMealWithExceed> filteredWithExceeded = getFilteredWithExceeded(mealList, LocalTime.of(9, 0), LocalTime.of(23, 0), 2000);
+        filteredWithExceeded.forEach(System.out::println);
     }
 
     public static List<UserMealWithExceed> getFilteredWithExceededWithoutStreamApi(
@@ -42,7 +42,7 @@ public class UserMealsUtil {
         Map<LocalDate, Integer> sumCaloriesInDay = new HashMap<>();
         for (UserMeal userMeal : mealList) {
             LocalDate date = userMeal.getLocalDate();
-            sumCaloriesInDay.merge(date, userMeal.getCalories(), (v1, v2) -> v1 + v2);
+            sumCaloriesInDay.merge(date, userMeal.getCalories(), Integer::sum);
         }
 
         //define meals with exceed and filter by time
