@@ -1,19 +1,21 @@
-package ru.javawebinar.topjava.dao;
+package ru.javawebinar.topjava;
 
 import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Burtsev on 11.09.2016.
  */
 public class DataBase {
 
-    private static Map<Integer, Meal> meals = new HashMap<>();
+    private static Map<Integer, Meal> meals = new ConcurrentHashMap<>();
 
-    private static int id = -1;
+    private static AtomicInteger id = new AtomicInteger(-1);
 
     //initializing
     static {
@@ -32,7 +34,7 @@ public class DataBase {
     }
 
     public static void add(Meal meal) {
-        meal.setId(id++);
+        meal.setId(id.incrementAndGet());
         meals.put(meal.getId(), meal);
     }
 
@@ -44,8 +46,10 @@ public class DataBase {
         meals.put(meal.getId(), meal);
     }
 
+    public static Meal getById(int id) { return meals.get(id); }
+
     public static List<Meal> getAll() {
-        return new ArrayList<Meal>(meals.values());
+        return new ArrayList<>(meals.values());
     }
 
 }

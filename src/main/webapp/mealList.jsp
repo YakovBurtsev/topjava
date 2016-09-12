@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Meal list</title>
-    <link href="stylesheet.css" rel="stylesheet" type="text/css">
+    <link href="mealList.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h2><a href="index.html">Home</a></h2>
@@ -21,12 +21,17 @@
         </tr>
         <c:forEach items="${mealList}" var="meal">
             <tr class="${meal.exceed ? 'exceed' : 'no-exceed'}">
-                <td>${f:formatter(meal.dateTime, 'yyyy-MM-dd HH:mm')}</td>
+                <td>${f:formatter(meal.dateTime)}</td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
+                <td><a href="meals?action=edit&id=<c:out value="${meal.id}"/>">Править</a></td>
+                <td><a href="meals?action=delete&id=<c:out value="${meal.id}"/>">Удалить</a></td>
             </tr>
         </c:forEach>
     </table>
 </c:if>
+
+<p><a href="meals?action=insert">Add meal</a></p>
+
 </body>
 </html>

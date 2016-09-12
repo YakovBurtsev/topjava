@@ -18,6 +18,10 @@ public class Meal {
 
     private int calories;
 
+    public Meal() {
+
+    }
+
     public Meal(LocalDateTime dateTime, String description, int calories) {
         this.dateTime = dateTime;
         this.description = description;

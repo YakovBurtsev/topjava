@@ -11,5 +11,6 @@ public interface Dao {
     void add(Meal meal);
     void delete(int id);
     void update(Meal meal);
+    Meal getById(int id);
     List<Meal> getAll();
 }
