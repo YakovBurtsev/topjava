@@ -35,32 +35,31 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String forward;
         String action = request.getParameter("action");
-        if (action !=null) {
-            if (action.equalsIgnoreCase("delete")) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                dao.delete(id);
-                forward = LIST_MEAL;
-                List<MealWithExceed> mealList = MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
-                request.setAttribute("mealList", mealList);
-                LOG.debug("redirect to mealList");
-            } else if (action.equalsIgnoreCase("edit")) {
-                forward = INSERT_OR_EDIT;
-                int id = Integer.parseInt(request.getParameter("id"));
-                Meal meal = dao.getById(id);
-                request.setAttribute("meal", meal);
-            } else {
-                forward = INSERT_OR_EDIT;
-            }
-        }
-        else {
+
+        if (action.equalsIgnoreCase("delete")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            dao.delete(id);
             forward = LIST_MEAL;
             List<MealWithExceed> mealList = MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
             request.setAttribute("mealList", mealList);
+            LOG.debug("redirect to mealList");
+        } else if (action.equalsIgnoreCase("edit")) {
+            forward = INSERT_OR_EDIT;
+            int id = Integer.parseInt(request.getParameter("id"));
+            Meal meal = dao.getById(id);
+            request.setAttribute("meal", meal);
+        } else if (action.equalsIgnoreCase("mealList")) {
+            forward = LIST_MEAL;
+            List<MealWithExceed> mealList = MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
+            request.setAttribute("mealList", mealList);
+        } else {
+            forward = INSERT_OR_EDIT;
         }
+
         request.getRequestDispatcher(forward).forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
         Meal meal = new Meal();
@@ -72,7 +71,7 @@ public class MealServlet extends HttpServlet {
         meal.setCalories(Integer.parseInt(request.getParameter("calories")));
 
         String id = request.getParameter("id");
-        if (id==null || id.isEmpty()) {
+        if (id == null || id.isEmpty()) {
             dao.add(meal);
         } else {
             meal.setId(Integer.parseInt(id));
