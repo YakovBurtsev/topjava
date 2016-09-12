@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -40,7 +39,7 @@ public class MealServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             dao.delete(id);
             forward = LIST_MEAL;
-            List<MealWithExceed> mealList = MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
+            List<MealWithExceed> mealList = MealsUtil.getWithExceeded(dao.getAll(), caloriesPerDay);
             request.setAttribute("mealList", mealList);
             LOG.debug("redirect to mealList");
         } else if (action.equalsIgnoreCase("edit")) {
@@ -50,7 +49,7 @@ public class MealServlet extends HttpServlet {
             request.setAttribute("meal", meal);
         } else if (action.equalsIgnoreCase("mealList")) {
             forward = LIST_MEAL;
-            List<MealWithExceed> mealList = MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
+            List<MealWithExceed> mealList = MealsUtil.getWithExceeded(dao.getAll(), caloriesPerDay);
             request.setAttribute("mealList", mealList);
         } else {
             forward = INSERT_OR_EDIT;
@@ -78,7 +77,7 @@ public class MealServlet extends HttpServlet {
             dao.update(meal);
         }
 
-        List<MealWithExceed> mealList = MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
+        List<MealWithExceed> mealList = MealsUtil.getWithExceeded(dao.getAll(), caloriesPerDay);
         request.setAttribute("mealList", mealList);
         request.getRequestDispatcher(LIST_MEAL).forward(request, response);
     }
