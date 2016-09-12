@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -25,11 +24,6 @@ public class MealServlet extends HttpServlet {
     private static String INSERT_OR_EDIT = "/meal.jsp";
     private static String LIST_MEAL = "/mealList.jsp";
     private static int caloriesPerDay = 2000;
-
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static String formatLocalDateTime(LocalDateTime localDateTime) {
-        return localDateTime.format(formatter);
-    }
 
     private Dao dao;
 
