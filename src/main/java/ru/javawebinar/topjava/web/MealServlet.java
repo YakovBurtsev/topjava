@@ -2,7 +2,7 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.dao.Dao;
-import ru.javawebinar.topjava.dao.DaoForMeal;
+import ru.javawebinar.topjava.dao.DaoMap;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -28,7 +28,7 @@ public class MealServlet extends HttpServlet {
     private Dao dao;
 
     public MealServlet() {
-        dao = new DaoForMeal();
+        dao = new DaoMap();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
