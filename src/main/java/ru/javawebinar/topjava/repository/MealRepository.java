@@ -9,7 +9,7 @@ import java.util.List;
  * 06.03.2015.
  */
 public interface MealRepository {
-    Meal save(int userId, Meal Meal);
+    Meal save(int userId, Meal meal);
 
     // false if not found
     boolean delete(int userId, int id);
