@@ -4,9 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.to.MealWithExceed;
 import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -20,31 +25,58 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-    public List<Meal> getAll(int userId) {
+    public List<MealWithExceed> getAll() {
         LOG.info("getAll");
-        return service.getAll(userId);
+        int userId = AuthorizedUser.id();
+        return MealsUtil.getWithExceeded(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    public Meal get(int userId, int id) {
+    public Meal get(int id) {
         LOG.info("get " + id);
+        int userId = AuthorizedUser.id();
         return service.get(userId, id);
     }
 
-    public Meal create(int userId, Meal meal) {
+    public Meal create(Meal meal) {
         meal.setId(null);
         LOG.info("create " + meal);
+        int userId = AuthorizedUser.id();
         return service.save(userId, meal);
     }
 
-    public void delete(int userId, int id) {
+    public void delete(int id) {
         LOG.info("delete " + id);
+        int userId = AuthorizedUser.id();
         service.delete(userId, id);
     }
 
-    public void update(int userId, Meal meal, int id) {
+    public void update(Meal meal, int id) {
         meal.setId(id);
         LOG.info("update " + meal);
+        int userId = AuthorizedUser.id();
         service.update(userId, meal);
+    }
+
+    public List<MealWithExceed> getFilteredByDateTime(int userId, LocalDate startDate, LocalTime startTime,
+                                                      LocalDate endDate, LocalTime endTime) {
+        if (startTime == null) {
+            startTime = LocalTime.MIN;
+        }
+
+        if (endTime == null) {
+            endTime = LocalTime.MAX;
+        }
+
+        if (startDate == null) {
+            startDate = LocalDate.MIN;
+        }
+
+        if (endDate == null) {
+            endDate = LocalDate.MAX;
+        }
+
+        return MealsUtil.getFilteredWithExceeded(service.getFilteredByDate(userId, startDate, endDate),
+                startTime, endTime, MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
 }

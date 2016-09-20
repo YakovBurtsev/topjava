@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,18 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
             this.userId = userId;
             this.meal = meal;
         }
+    }
+
+    @Override
+    public List<Meal> getFilteredByDate(int userId, LocalDate startDate, LocalDate endDate) {
+        List<Meal> meals = repository.values().stream()
+                .filter(mealWithUserId -> mealWithUserId.userId == userId)
+                .filter(mealWithUserId -> !(mealWithUserId.meal.getDate().isBefore(startDate)))
+                .filter(mealWithUserId -> !(mealWithUserId.meal.getDate().isAfter(endDate)))
+                .map(mealWithUserId -> mealWithUserId.meal)
+                .collect(Collectors.toList());
+        Collections.sort(meals, (m1, m2) -> m1.getDateTime().compareTo(m2.getDateTime()));
+        return meals;
     }
 }
 
