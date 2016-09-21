@@ -57,8 +57,11 @@ public class MealRestController {
         service.update(userId, meal);
     }
 
-    public List<MealWithExceed> getFilteredByDateTime(int userId, LocalDate startDate, LocalTime startTime,
+    public List<MealWithExceed> getFilteredByDateTime(LocalDate startDate, LocalTime startTime,
                                                       LocalDate endDate, LocalTime endTime) {
+        int userId = AuthorizedUser.id();
+
+        LOG.info("getFilteredByDateTime");
         if (startTime == null) {
             startTime = LocalTime.MIN;
         }
