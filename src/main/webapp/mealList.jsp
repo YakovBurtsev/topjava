@@ -13,6 +13,16 @@
         .exceeded {
             color: red;
         }
+
+        .filter-column {
+            display: inline-block;
+            text-align: left;
+            margin-right: 10px;
+        }
+
+        .filter-row {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -20,6 +30,33 @@
     <h2><a href="index.html">Home</a></h2>
     <h3>Meal list</h3>
     <a href="meals?action=create">Add Meal</a>
+    <hr>
+    <form method="get" action="meals">
+        <div class="filter">
+            <input type="hidden" name="action" value="filter">
+            <div class="filter-column">
+                <div class="filter-row">
+                    <label for="startDate">From Date:</label>
+                    <input type="date" name="startDate" id="startDate">
+                </div>
+                <div class="filter-row">
+                    <label for="startTime">From Time:</label>
+                    <input type="time" name="startTime" id="startTime">
+                </div>
+            </div>
+            <div class="filter-column">
+                <div class="filter-row">
+                    <label for="endDate">To Date:</label>
+                    <input type="date" name="endDate" id="endDate">
+                </div>
+                <div class="filter-row">
+                    <label for="endTime">To Time:</label>
+                    <input type="time" name="endTime" id="endTime">
+                </div>
+            </div>
+        </div>
+        <button style="margin-top: 15px" type="submit">Filter</button>
+    </form>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>

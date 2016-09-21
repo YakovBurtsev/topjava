@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -68,11 +69,20 @@ public class MealServlet extends HttpServlet {
             request.setAttribute("mealList", mealRestController.getAll());
             request.getRequestDispatcher("/mealList.jsp").forward(request, response);
 
-        } else if ("getFilteredByDateTime".equals(action)) {
+        } else if ("filter".equals(action)) {
             LOG.info("getFilteredByDateTime");
-            request.setAttribute("mealList", mealRestController
-                    .getFilteredByDateTime(LocalDate.parse("startDate"), LocalTime.parse("startTime"),
-                            LocalDate.parse("endDate"), LocalTime.parse("endTime")));
+            String s;
+            s = request.getParameter("startDate");
+            LocalDate startDate = s.isEmpty() ? LocalDate.MIN : LocalDate.parse(s, TimeUtil.DATE_FORMATTER);
+            s = request.getParameter("endDate");
+            LocalDate endDate = s.isEmpty() ? LocalDate.MAX : LocalDate.parse(s, TimeUtil.DATE_FORMATTER);
+            s = request.getParameter("startTime");
+            LocalTime startTime = s.isEmpty() ? LocalTime.MIN : LocalTime.parse(s, TimeUtil.TIME_FORMATTER);
+            s = request.getParameter("endTime");
+            LocalTime endTime = s.isEmpty() ? LocalTime.MAX : LocalTime.parse(s, TimeUtil.TIME_FORMATTER);
+
+            request.setAttribute("mealList",
+                    mealRestController.getFilteredByDateTime(startDate, startTime, endDate, endTime));
             request.getRequestDispatcher("/mealList.jsp").forward(request, response);
 
         } else if ("delete".equals(action)) {

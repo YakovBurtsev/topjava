@@ -62,21 +62,6 @@ public class MealRestController {
         int userId = AuthorizedUser.id();
 
         LOG.info("getFilteredByDateTime");
-        if (startTime == null) {
-            startTime = LocalTime.MIN;
-        }
-
-        if (endTime == null) {
-            endTime = LocalTime.MAX;
-        }
-
-        if (startDate == null) {
-            startDate = LocalDate.MIN;
-        }
-
-        if (endDate == null) {
-            endDate = LocalDate.MAX;
-        }
 
         return MealsUtil.getFilteredWithExceeded(service.getFilteredByDate(userId, startDate, endDate),
                 startTime, endTime, MealsUtil.DEFAULT_CALORIES_PER_DAY);

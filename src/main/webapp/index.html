@@ -7,6 +7,14 @@
 <body>
 <h2>Проект "<a href="https://github.com/JavaWebinar/topjava08" target="_blank">Java Enterprise (Topjava)"</a></h2>
 <hr>
+<form method="post" action="users">
+    <label for="id">Authorization as: </label>
+    <select size="1" id="id" name="id" onchange="submit();">
+        <option>select</option>
+        <option value="1">user1</option>
+        <option value="2">user2</option>
+    </select>
+</form>
 <ul>
     <li><a href="users">User List</a></li>
     <li><a href="meals">Meal List</a></li>
