@@ -8,7 +8,7 @@ import ru.javawebinar.topjava.util.MealsUtil;
  */
 public class AuthorizedUser {
 
-    private static int id;
+    private static int id = 1;
 
     public static void setId(int id) {
         AuthorizedUser.id = id;
