@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.TimeUtil;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -67,6 +68,17 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         return meals;
     }
 
+    @Override
+    public List<Meal> getFilteredByDate(int userId, LocalDate startDate, LocalDate endDate) {
+        List<Meal> meals = repository.values().stream()
+                .filter(mealWithUserId -> mealWithUserId.userId == userId)
+                .filter(mealWithUserId -> TimeUtil.isDateBetween(mealWithUserId.meal.getDate(), startDate, endDate))
+                .map(mealWithUserId -> mealWithUserId.meal)
+                .collect(Collectors.toList());
+        Collections.sort(meals, (m1, m2) -> m1.getDateTime().compareTo(m2.getDateTime()));
+        return meals;
+    }
+
     private class MealWithUserId {
         int userId;
         Meal meal;
@@ -75,18 +87,6 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
             this.userId = userId;
             this.meal = meal;
         }
-    }
-
-    @Override
-    public List<Meal> getFilteredByDate(int userId, LocalDate startDate, LocalDate endDate) {
-        List<Meal> meals = repository.values().stream()
-                .filter(mealWithUserId -> mealWithUserId.userId == userId)
-                .filter(mealWithUserId -> !(mealWithUserId.meal.getDate().isBefore(startDate)))
-                .filter(mealWithUserId -> !(mealWithUserId.meal.getDate().isAfter(endDate)))
-                .map(mealWithUserId -> mealWithUserId.meal)
-                .collect(Collectors.toList());
-        Collections.sort(meals, (m1, m2) -> m1.getDateTime().compareTo(m2.getDateTime()));
-        return meals;
     }
 }
 

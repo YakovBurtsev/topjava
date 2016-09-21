@@ -45,7 +45,7 @@ public class MealsUtil {
                 );
 
         return meals.stream()
-                .filter(meal -> TimeUtil.isBetween(meal.getTime(), startTime, endTime))
+                .filter(meal -> TimeUtil.isTimeBetween(meal.getTime(), startTime, endTime))
                 .map(meal -> createWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
@@ -57,7 +57,7 @@ public class MealsUtil {
 
         final List<MealWithExceed> mealExceeded = new ArrayList<>();
         meals.forEach(meal -> {
-            if (TimeUtil.isBetween(meal.getTime(), startTime, endTime)) {
+            if (TimeUtil.isTimeBetween(meal.getTime(), startTime, endTime)) {
                 mealExceeded.add(createWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay));
             }
         });
