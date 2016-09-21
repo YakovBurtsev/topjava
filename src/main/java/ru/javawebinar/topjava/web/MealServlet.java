@@ -73,13 +73,13 @@ public class MealServlet extends HttpServlet {
             LOG.info("getFilteredByDateTime");
             String s;
             s = request.getParameter("startDate");
-            LocalDate startDate = s.isEmpty() ? LocalDate.MIN : LocalDate.parse(s, TimeUtil.DATE_FORMATTER);
+            LocalDate startDate = s.isEmpty() ? null : LocalDate.parse(s, TimeUtil.DATE_FORMATTER);
             s = request.getParameter("endDate");
-            LocalDate endDate = s.isEmpty() ? LocalDate.MAX : LocalDate.parse(s, TimeUtil.DATE_FORMATTER);
+            LocalDate endDate = s.isEmpty() ? null : LocalDate.parse(s, TimeUtil.DATE_FORMATTER);
             s = request.getParameter("startTime");
-            LocalTime startTime = s.isEmpty() ? LocalTime.MIN : LocalTime.parse(s, TimeUtil.TIME_FORMATTER);
+            LocalTime startTime = s.isEmpty() ? null : LocalTime.parse(s, TimeUtil.TIME_FORMATTER);
             s = request.getParameter("endTime");
-            LocalTime endTime = s.isEmpty() ? LocalTime.MAX : LocalTime.parse(s, TimeUtil.TIME_FORMATTER);
+            LocalTime endTime = s.isEmpty() ? null : LocalTime.parse(s, TimeUtil.TIME_FORMATTER);
 
             request.setAttribute("mealList",
                     mealRestController.getFilteredByDateTime(startDate, startTime, endDate, endTime));
