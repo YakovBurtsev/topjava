@@ -1,10 +1,11 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,9 +17,11 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -32,25 +35,31 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
+    @Autowired
+    protected MealService service;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @Autowired
-    protected MealService service;
+    @Rule
+    public Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            testDurations.put(description.getMethodName(), nanos/1000000);
+        }
+    };
 
-    private long startTime;
-    private long endTime;
+    private static Map<String, Long> testDurations = new HashMap<>();
 
-    @Before
-    public void setUp() throws Exception {
-        startTime = System.currentTimeMillis();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        endTime = System.currentTimeMillis();
-        System.out.printf("\nDuration %d ms\n", (endTime-startTime));
+    @AfterClass
+    public static void printResult() {
+        String result = String.format("%n%-20s %8s%n", "test name", "ms");
+        result += "-----------------------------\n";
+        result += testDurations.entrySet().stream()
+                .sorted((e1, e2) -> e1.getValue().compareTo(e2.getValue()))
+                .map(e -> String.format("%-20s %8d%n", e.getKey(), e.getValue()))
+                .collect(Collectors.joining(""));
+        System.out.println(result);
     }
 
     @Test
