@@ -4,11 +4,7 @@ import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.rules.Stopwatch;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,11 +18,14 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
+
+/**
+ * Created by Burtsev on 13.10.2016.
+ */
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -34,33 +33,19 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles({Profiles.ACTIVE_DB, Profiles.ACTIVE_REPOSITORY})
-public class MealServiceTest {
-    private static final Logger LOG = LoggerFactory.getLogger(MealServiceTest.class);
+@ActiveProfiles(Profiles.ACTIVE_DB)
+public abstract class AbstractMealServiceTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    private static StringBuffer results = new StringBuffer();
-
-    @AfterClass
-    public static void printResult() {
+    public static void printResult(StringBuffer results) {
         System.out.printf("%nTest             Duration, ms%n");
         System.out.println("-----------------------------");
         System.out.println(results);
         System.out.printf("-----------------------------%n%n");
     }
 
+
     @Rule
-    // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
-    public Stopwatch stopwatch = new Stopwatch() {
-        @Override
-        protected void finished(long nanos, Description description) {
-            String result = String.format("%-20s %8d", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
-            results.append(result).append('\n');
-            LOG.info(result + " ms\n");
-        }
-    };
+    public ExpectedException thrown = ExpectedException.none();
 
     @Autowired
     protected MealService service;

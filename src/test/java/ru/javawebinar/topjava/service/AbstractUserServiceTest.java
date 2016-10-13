@@ -21,14 +21,18 @@ import java.util.Collections;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
+/**
+ * Created by Burtsev on 13.10.2016.
+ */
+
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles({Profiles.ACTIVE_DB, Profiles.ACTIVE_REPOSITORY})
-public class UserServiceTest {
+@ActiveProfiles(Profiles.ACTIVE_DB)
+public abstract class AbstractUserServiceTest {
 
     @Autowired
     protected UserService service;
@@ -37,7 +41,7 @@ public class UserServiceTest {
     public void setUp() throws Exception {
         service.evictCache();
     }
-        
+
     @Test
     public void testSave() throws Exception {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));
