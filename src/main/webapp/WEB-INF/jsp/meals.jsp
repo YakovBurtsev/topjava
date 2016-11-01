@@ -18,25 +18,32 @@
             <h3><fmt:message key="meals.title"/></h3>
 
             <div class="view-box">
-                <form id="filter" method="post" action="meals/filter">
-                    <div>
-                        <label for="startDate"><fmt:message key="meals.startDate"/>:</label>
-                        <input type="date" id="startDate" name="startDate" value="${param.startDate}">
+                <form id="filter" role="form" class="form-horizontal" action="/meals" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="startDate"><fmt:message key="meals.startDate"/>:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" name="startDate" id="startDate" value="${param.startDate}">
+                        </div>
+
+                        <label class="control-label col-sm-2" for="endDate"><fmt:message key="meals.endDate"/>:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" name="endDate" id="endDate" value="${param.endDate}">
+                        </div>
                     </div>
-                    <div>
-                        <label for="endDate"><fmt:message key="meals.endDate"/>:</label>
-                        <input type="date" id="endDate" name="endDate" value="${param.endDate}">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="startTime"><fmt:message key="meals.startTime"/>:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control time-picker" name="startTime" id="startTime" value="${param.startTime}">
+                        </div>
+                        <label class="control-label col-sm-2" for="endTime"><fmt:message key="meals.endTime"/>:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control time-picker" name="endTime" id="endTime" value="${param.endTime}">
+                        </div>
                     </div>
-                    <div>
-                        <label for="startTime"><fmt:message key="meals.startTime"/>:</label>
-                        <input type="time" id="startTime" name="startTime" value="${param.startTime}">
-                    </div>
-                    <div>
-                        <label for="endTime"><fmt:message key="meals.endTime"/>:</label>
-                        <input type="time" id="endTime" name="endTime" value="${param.endTime}">
-                    </div>
-                    <div>
-                        <button type="submit"><fmt:message key="meals.filter"/></button>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <button type="submit" class="btn btn-primary pull-right"><fmt:message key="meals.filter"/></button>
+                        </div>
                     </div>
                 </form>
 
