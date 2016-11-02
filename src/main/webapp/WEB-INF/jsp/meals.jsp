@@ -18,7 +18,7 @@
             <h3><fmt:message key="meals.title"/></h3>
 
             <div class="view-box">
-                <form id="filter" role="form" class="form-horizontal" action="/meals" method="post">
+                <form id="filter" role="form" class="form-horizontal" action="meals/filter" method="post">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="startDate"><fmt:message key="meals.startDate"/>:</label>
                         <div class="col-sm-2">
@@ -131,10 +131,27 @@
 <script type="text/javascript" src="webjars/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="webjars/noty/2.3.8/js/noty/packaged/jquery.noty.packaged.min.js"></script>
 <script type="text/javascript" src="resources/js/datatablesUtil.js"></script>
+<script type="text/javascript" src="resources/js/mealsDatatable.js"></script>
 <script type="text/javascript">
 
-    var ajaxUrl = 'ajax/meals/';
     var datatableApi;
+    var ajaxUrl = 'ajax/meals/';
+
+    function filter() {
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl + 'filter',
+            data: $('#filter').serialize(),
+            success: function (data) {
+                datatableApi.fnClearTable();
+                $.each(data, function (key, item) {
+                    datatableApi.fnAddData(item);
+                });
+                datatableApi.fnDraw();
+                successNoty('Filtered');
+            }
+        });
+    }
 
     // $(document).ready(function () {
     $(function () {
