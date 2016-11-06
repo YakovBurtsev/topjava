@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.user;
+package ru.javawebinar.topjava.web;
 
 import org.junit.Test;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
